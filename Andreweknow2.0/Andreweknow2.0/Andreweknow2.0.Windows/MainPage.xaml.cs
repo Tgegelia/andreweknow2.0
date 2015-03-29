@@ -51,19 +51,19 @@ namespace Andreweknow2._0
             {
                 daBox.Text = "Error Occured";
             }
-            if (daBox.Text == "Open the Garage")
-                send_Data("garagecommand");//send signal to garage
-            if (daBox.Text == "Turn on the lights")
-                send_Data("lightcommand");//send signal to lights
-            if (daBox.Text == "Turn on the heat")
-                send_Data("heatcommand");//send signal for heat
+            if (daBox.Text == "Open the Garage.")
+                send_Data("1");//send signal to garage
+            if (daBox.Text == "Turn on the lights.")
+                send_Data("2");//send signal to lights
+            if (daBox.Text == "Turn on the heat.")
+                send_Data("3");//send signal for heat
 
             
         }
         private async void send_Data(string command)
         {
             StreamSocket socket = new StreamSocket();
-            HostName deviceHostName= new HostName("");
+            HostName deviceHostName= new HostName("HC-06");
             DataWriter dataWriter = new DataWriter(socket.OutputStream);
             await socket.ConnectAsync(deviceHostName, "1");
 
