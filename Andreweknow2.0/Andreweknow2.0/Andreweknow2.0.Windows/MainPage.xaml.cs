@@ -33,6 +33,11 @@ namespace Andreweknow2._0
             daBox.Text = b.Content.ToString();
         }
 
+        private void voiceStart(object sender, RoutedEventArgs e)
+        {
+            //put voice recognition stuff here
+        }
+
         
     }
 
