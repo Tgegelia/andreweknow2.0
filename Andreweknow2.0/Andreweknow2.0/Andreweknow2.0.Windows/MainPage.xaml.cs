@@ -26,5 +26,15 @@ namespace Andreweknow2._0
         {
             this.InitializeComponent();
         }
+
+        private void clicked(object sender, RoutedEventArgs e)
+        {
+            Button b = (Button)sender;
+            daBox.Text = b.Content.ToString();
+        }
+
+        
     }
+
+
 }
