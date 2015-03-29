@@ -29,7 +29,6 @@ namespace Andreweknow2._0
             this.InitializeComponent();
             this.Loaded += MainPage_Loaded;
         }
-
         private void clicked(object sender, RoutedEventArgs e)
         {
             Button b = (Button)sender;
@@ -65,6 +64,7 @@ namespace Andreweknow2._0
                 "Background noise may interfere with accurate speech recognition."
             };
             SpeechControl.SpeechRecognizer = SR;
+            SpeakButton_Clicked(null, null);
         }
         
     }
