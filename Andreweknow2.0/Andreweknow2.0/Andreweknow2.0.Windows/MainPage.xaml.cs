@@ -54,18 +54,18 @@ namespace Andreweknow2._0
             if (daBox.Text == "Open the Garage.")
                 send_Data("1");//send signal to garage
             if (daBox.Text == "Turn on the lights.")
-                send_Data("2");//send signal to lights
+                send_Data("1");//send signal to lights
             if (daBox.Text == "Turn on the heat.")
-                send_Data("3");//send signal for heat
+                send_Data("1");//send signal for heat
 
             
         }
         private async void send_Data(string command)
         {
             StreamSocket socket = new StreamSocket();
-            HostName deviceHostName= new HostName("HC-06");
+            HostName deviceHostName= new HostName("20:14:10:14:07:50");
             DataWriter dataWriter = new DataWriter(socket.OutputStream);
-            await socket.ConnectAsync(deviceHostName, "1");
+            await socket.ConnectAsync(deviceHostName,"1");
 
             if(dataWriter != null)
             {
