@@ -30,6 +30,8 @@ namespace Andreweknow2._0
     {
         DataWriter dataWriter;
         SpeechRecognizer SR;
+        StreamSocket socket;
+
         public MainPage()
         {
             this.InitializeComponent();
@@ -53,26 +55,24 @@ namespace Andreweknow2._0
             {
                 daBox.Text = "Error Occured";
             }
-            if (daBox.Text == "Open the Garage.")
-                send_Data("1");//send signal to garage
+            if (daBox.Text == "Open the garage.")
+                await SendCommand("2");//send signal to garage
             if (daBox.Text == "Turn on the lights.")
-                send_Data("1");//send signal to lights
+                await SendCommand("1");//send signal to lights
             if (daBox.Text == "Turn on the heat.")
-                send_Data("1");//send signal for heat
-
+                await SendCommand("3");//send signal for heat
+            if (daBox.Text == "I will kill Kyle.")
+                await SendCommand("0");//kill Kyle
             
         }
-        private async void send_Data(string command)
+        private async void connect()
         {
-            StreamSocket socket = new StreamSocket();
+            socket = new StreamSocket();
             HostName deviceHostName= new HostName("20:14:10:14:07:50");
+
             if(socket!=null){
             await socket.ConnectAsync(deviceHostName,"1");
             dataWriter = new DataWriter(socket.OutputStream);
-            }
-            if(dataWriter != null)
-            {
-               uint x = await SendCommand("1");
             }
         }
 
@@ -105,6 +105,17 @@ namespace Andreweknow2._0
             };
             SpeechControl.SpeechRecognizer = SR;
             SpeakButton_Clicked(null, null);
+        }
+
+        private void conn_clicked(object sender, RoutedEventArgs e)
+        {
+            connect();
+        }
+
+        private void disc_clicked(object sender, RoutedEventArgs e)
+        {
+            if(socket!=null)
+                socket.Dispose();
         }
         
     }
