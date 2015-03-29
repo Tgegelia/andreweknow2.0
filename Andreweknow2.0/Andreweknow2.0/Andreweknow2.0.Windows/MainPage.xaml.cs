@@ -55,8 +55,8 @@ namespace Andreweknow2._0
         {
             speech = new SpeechSynthesizer();
             mediaElement1 = this.media;
-
             
+                       
             try
             {
                 var result = await SR.RecognizeSpeechToTextAsync();
