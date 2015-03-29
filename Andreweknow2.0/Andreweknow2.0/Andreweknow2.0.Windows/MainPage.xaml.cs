@@ -67,22 +67,41 @@ namespace Andreweknow2._0
             {
                 daBox.Text = a.ToString();
             }
-            if (daBox.Text == "open the garage")
+            bool open,lights,garage,on,heat, off;
+            open = lights = garage = on = heat = off = false;
+            char[] delimiterChars = { ' ', ',', '.', ':', '\t' };
+            String[] text = daBox.Text.ToLower().Split(delimiterChars);
+            foreach (string s in text)
+            {
+                if (s == "open")
+                    open = true;
+                if (s == "lights")
+                    lights = true;
+                if (s == "garage")
+                    garage = true;
+                if (s == "on")
+                    on = true;
+                if (s == "heat")
+                    heat = true;
+                if (s == "off")
+                    off = true;
+            }
+            if (open && garage)
             {
                 await SendCommand("2");//send signal to garage
                 stream= await speech.SynthesizeTextToStreamAsync("The Garage is opening.");
             }
-            else if (daBox.Text == "Turn on the lights.")
+            else if (on && lights)
             {
                 await SendCommand("1");//send signal to lights
                 stream= await speech.SynthesizeTextToStreamAsync("The Lights are turning on.");
             }
-            else if (daBox.Text == "Turn on the heat.")
+            else if (on && heat)
             {
                 await SendCommand("3");//send signal for heat
                 stream= await speech.SynthesizeTextToStreamAsync("The heater is now on.");
             }
-            else if (daBox.Text == "Turn off.")
+            else if (off)
             {
                 await SendCommand("0");//kill Kyle
                 stream = await speech.SynthesizeTextToStreamAsync("They're off");
