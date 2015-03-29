@@ -38,6 +38,7 @@ namespace Andreweknow2._0
         SpeechSynthesizer speech;
         SpeechSynthesisStream stream;
         MediaElement mediaElement1;
+        bool connected;
 
         public MainPage()
         {
@@ -67,8 +68,10 @@ namespace Andreweknow2._0
             {
                 daBox.Text = a.ToString();
             }
-            bool open,lights,garage,on,heat, off,unlock,lock1;
-            open = lights = garage = on = heat = off =unlock=lock1= false;
+            bool open, lights, garage, on, heat, off, unlock, lock1, num;
+            open = lights = garage = on = heat = off = unlock = lock1 = num = false;
+            int temp = 0;
+            int number = 0;
             char[] delimiterChars = { ' ', ',', '.', ':', '\t' };
             String[] text = daBox.Text.ToLower().Split(delimiterChars);
             foreach (string s in text)
@@ -81,7 +84,7 @@ namespace Andreweknow2._0
                     garage = true;
                 if (s == "on")
                     on = true;
-                if (s == "heat")
+                if (s == "heat" || s == "heater")
                     heat = true;
                 if (s == "off")
                     off = true;
@@ -89,6 +92,10 @@ namespace Andreweknow2._0
                     unlock = true;
                 if (s == "lock")
                     lock1 = true;
+                if (int.TryParse(s, out temp)){
+                    num = true;
+                    number = temp;
+                }
             }
             if (open && garage)
             {
@@ -100,10 +107,20 @@ namespace Andreweknow2._0
                 await SendCommand("1");//send signal to lights
                 stream= await speech.SynthesizeTextToStreamAsync("The Lights are turning on.");
             }
-            else if (on && heat)
+            else if (heat)
             {
-                await SendCommand("3");//send signal for heat
-                stream= await speech.SynthesizeTextToStreamAsync("The heater is now on.");
+
+                if (num)
+                {
+                    await SendCommand(number + "0");
+                    stream = await speech.SynthesizeTextToStreamAsync("The heater is set to " + number + ".");
+                }
+
+                else if (on)
+                {
+                    await SendCommand("3");//send signal for heating
+                    stream = await speech.SynthesizeTextToStreamAsync("The heater is now on.");
+                }
             }
             else if (off)
             {
@@ -149,7 +166,7 @@ namespace Andreweknow2._0
         public async Task<uint> SendCommand(string command)
         {
             uint sentCommandSize = 0;
-            if (dataWriter != null)
+            if (dataWriter != null && connected)
             {
                 uint commandSize = dataWriter.MeasureString(command);
                 dataWriter.WriteByte((byte)commandSize);
@@ -161,7 +178,7 @@ namespace Andreweknow2._0
  
         async void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
-            await connect();
+            connected = await connect();
             var credentials = new SpeechAuthorizationParameters();
             credentials.ClientId = "Andreweknow";
             credentials.ClientSecret = "k+gEHcP3wiwPmAzuw27ZtakgOJllIkDlBAsHTu1HLkE=";
