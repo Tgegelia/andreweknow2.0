@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -27,6 +28,7 @@ namespace Andreweknow2._0
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        DataWriter dataWriter;
         SpeechRecognizer SR;
         public MainPage()
         {
@@ -64,16 +66,27 @@ namespace Andreweknow2._0
         {
             StreamSocket socket = new StreamSocket();
             HostName deviceHostName= new HostName("20:14:10:14:07:50");
-            DataWriter dataWriter = new DataWriter(socket.OutputStream);
+            if(socket!=null){
             await socket.ConnectAsync(deviceHostName,"1");
-
+            dataWriter = new DataWriter(socket.OutputStream);
+            }
             if(dataWriter != null)
+            {
+               uint x = await SendCommand("1");
+            }
+        }
+
+        public async Task<uint> SendCommand(string command)
+        {
+            uint sentCommandSize = 0;
+            if (dataWriter != null)
             {
                 uint commandSize = dataWriter.MeasureString(command);
                 dataWriter.WriteByte((byte)commandSize);
-                dataWriter.WriteString(command);
+                sentCommandSize = dataWriter.WriteString(command);
                 await dataWriter.StoreAsync();
             }
+            return sentCommandSize;
         }
  
         void MainPage_Loaded(object sender, RoutedEventArgs e)
