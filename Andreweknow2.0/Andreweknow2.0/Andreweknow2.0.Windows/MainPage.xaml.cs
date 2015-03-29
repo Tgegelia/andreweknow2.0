@@ -13,6 +13,10 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Bing.Speech;
+using Windows.Networking.Sockets;
+using Windows.Networking;
+using Windows.Storage.Streams;
+
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -49,15 +53,29 @@ namespace Andreweknow2._0
                 daBox.Text = "Error Occured";
             }
             if (daBox.Text == "Open the Garage")
-                ;//send signal to garage
+                send_Data("garagecommand");//send signal to garage
             if (daBox.Text == "Turn on the lights")
-                ;//send signal to lights
+                send_Data("lightcommand");//send signal to lights
             if (daBox.Text == "Turn on the heat")
-                ;//send signal for heat
+                send_Data("heatcommand");//send signal for heat
 
             
         }
+        private async void send_Data(string command)
+        {
+            StreamSocket socket = new StreamSocket();
+            HostName deviceHostName= new HostName("");
+            DataWriter dataWriter = new DataWriter(socket.OutputStream);
+            await socket.ConnectAsync(deviceHostName, "1");
 
+            if(dataWriter != null)
+            {
+                uint commandSize = dataWriter.MeasureString(command);
+                dataWriter.WriteByte((byte)commandSize);
+                dataWriter.WriteString(command);
+                await dataWriter.StoreAsync();
+            }
+        }
  
         void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
