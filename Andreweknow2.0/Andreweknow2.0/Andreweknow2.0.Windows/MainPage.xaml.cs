@@ -42,8 +42,8 @@ namespace Andreweknow2._0
         public MainPage()
         {
             this.InitializeComponent();
+            
             this.Loaded += MainPage_Loaded;
-            connect();
         }
         private void clicked(object sender, RoutedEventArgs e)
         {
@@ -56,17 +56,18 @@ namespace Andreweknow2._0
             speech = new SpeechSynthesizer();
             mediaElement1 = this.media;
             speech.Voice = SpeechSynthesizer.AllVoices[2];
-            
+       
             try
             {
                 var result = await SR.RecognizeSpeechToTextAsync();
                 daBox.Text = result.Text;
+               
             }
             catch (Exception a)
             {
                 daBox.Text = a.ToString();
             }
-            if (daBox.Text == "Open the garage.")
+            if (daBox.Text == "open the garage")
             {
                 await SendCommand("2");//send signal to garage
                 stream= await speech.SynthesizeTextToStreamAsync("The Garage is opening.");
@@ -95,17 +96,23 @@ namespace Andreweknow2._0
                 this.media.Play();
             }
         }
-        private async void connect()
+        private async Task<bool> connect()
         {
             socket = new StreamSocket();
-            HostName deviceHostName= new HostName("20:14:10:14:07:50");
-           
-            if(socket!=null){
-            await socket.ConnectAsync(deviceHostName,"1");
-            dataWriter = new DataWriter(socket.OutputStream);
-            }
-        }
+            HostName deviceHostName = new HostName("20:14:10:14:07:50");
 
+            if (socket != null)
+            {
+                try
+                {
+                    await socket.ConnectAsync(deviceHostName, "1");
+                    dataWriter = new DataWriter(socket.OutputStream);
+                    return true;
+                }
+                catch (Exception) { daBox.Text = this.ToString(); return false; };
+            }
+            else { return false; }
+        }
         public async Task<uint> SendCommand(string command)
         {
             uint sentCommandSize = 0;
@@ -119,8 +126,9 @@ namespace Andreweknow2._0
             return sentCommandSize;
         }
  
-        void MainPage_Loaded(object sender, RoutedEventArgs e)
+        async void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
+            await connect();
             var credentials = new SpeechAuthorizationParameters();
             credentials.ClientId = "Andreweknow";
             credentials.ClientSecret = "k+gEHcP3wiwPmAzuw27ZtakgOJllIkDlBAsHTu1HLkE=";
@@ -137,10 +145,6 @@ namespace Andreweknow2._0
             SpeakButton_Clicked(null, null);
         }
 
-        private void conn_clicked(object sender, RoutedEventArgs e)
-        {
-            connect();
-        }
 
         private void disc_clicked(object sender, RoutedEventArgs e)
         {
