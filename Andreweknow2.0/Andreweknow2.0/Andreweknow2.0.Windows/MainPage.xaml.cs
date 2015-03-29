@@ -55,7 +55,7 @@ namespace Andreweknow2._0
         {
             speech = new SpeechSynthesizer();
             mediaElement1 = this.media;
-
+            speech.Voice = SpeechSynthesizer.AllVoices[2];
             
             try
             {
