@@ -11,6 +11,7 @@
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <sp:SpeechRecognizerUx x:Name="SpeechControl" />
         <TextBox x:Name="daBox" HorizontalAlignment="Center" Margin="422,93,421,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Height="122" Width="523"/>
+        <MediaElement Grid.Row="0" x:Name="media" AutoPlay="False"/>
         <AppBarButton x:Name="SpeakButton" Click="SpeakButton_Clicked" Margin="623,435,621,260" Height="73" Width="122" Icon="Microphone" RequestedTheme="Dark" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Center" VerticalAlignment="Center" >
         	<AppBarButton.RenderTransform>
         		<CompositeTransform ScaleX="5" ScaleY="5"/>

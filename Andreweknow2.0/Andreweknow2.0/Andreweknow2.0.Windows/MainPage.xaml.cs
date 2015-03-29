@@ -18,6 +18,8 @@ using Bing.Speech;
 using Windows.Networking.Sockets;
 using Windows.Networking;
 using Windows.Storage.Streams;
+using Windows.Media.SpeechSynthesis;
+using Windows.Media;
 
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
@@ -28,16 +30,20 @@ namespace Andreweknow2._0
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
     public sealed partial class MainPage : Page
+           
     {
         DataWriter dataWriter;
         SpeechRecognizer SR;
         StreamSocket socket;
+        SpeechSynthesizer speech;
+        SpeechSynthesisStream stream;
+        MediaElement mediaElement1;
 
         public MainPage()
         {
             this.InitializeComponent();
-            connect();
             this.Loaded += MainPage_Loaded;
+            connect();
         }
         private void clicked(object sender, RoutedEventArgs e)
         {
@@ -47,31 +53,53 @@ namespace Andreweknow2._0
 
         private async void SpeakButton_Clicked(object sender, RoutedEventArgs e)
         {
+            speech = new SpeechSynthesizer();
+            mediaElement1 = this.media;
+
             
             try
             {
                 var result = await SR.RecognizeSpeechToTextAsync();
                 daBox.Text = result.Text;
             }
-            catch (Exception)
+            catch (Exception a)
             {
-                daBox.Text = "Error Occured";
+                daBox.Text = a.ToString();
             }
             if (daBox.Text == "Open the garage.")
+            {
                 await SendCommand("2");//send signal to garage
-            if (daBox.Text == "Turn on the lights.")
+                stream= await speech.SynthesizeTextToStreamAsync("The Garage is opening.");
+            }
+            else if (daBox.Text == "Turn on the lights.")
+            {
                 await SendCommand("1");//send signal to lights
-            if (daBox.Text == "Turn on the heat.")
+                stream= await speech.SynthesizeTextToStreamAsync("The Lights are turning on.");
+            }
+            else if (daBox.Text == "Turn on the heat.")
+            {
                 await SendCommand("3");//send signal for heat
-            if (daBox.Text == "Reset.")
+                stream= await speech.SynthesizeTextToStreamAsync("The heater is now on.");
+            }
+            else if (daBox.Text == "Turn off.")
+            {
                 await SendCommand("0");//kill Kyle
-            
+                stream = await speech.SynthesizeTextToStreamAsync("They're off");
+            }
+            else
+                stream = null;
+            if (stream != null)
+            {
+                this.media.AutoPlay = true;
+                this.media.SetSource(stream, stream.ContentType);
+                this.media.Play();
+            }
         }
         private async void connect()
         {
             socket = new StreamSocket();
             HostName deviceHostName= new HostName("20:14:10:14:07:50");
-
+           
             if(socket!=null){
             await socket.ConnectAsync(deviceHostName,"1");
             dataWriter = new DataWriter(socket.OutputStream);
