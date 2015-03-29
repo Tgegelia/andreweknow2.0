@@ -22,9 +22,11 @@ namespace Andreweknow2._0
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        SpeechRecognizer SR;
         public MainPage()
         {
             this.InitializeComponent();
+            this.Loaded += MainPage_Loaded;
         }
 
         private void clicked(object sender, RoutedEventArgs e)
@@ -33,10 +35,20 @@ namespace Andreweknow2._0
             daBox.Text = b.Content.ToString();
         }
 
-        private void voiceStart(object sender, RoutedEventArgs e)
+        private void SpeakButton_Clicked(object sender, RoutedEventArgs e)
         {
-            //put voice recognition stuff here
+
         }
+
+ 
+        void MainPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            var credentials = new SpeechAuthorizationParameters();
+            credentials.ClientId = "Andreweknow";
+            credentials.ClientSecret = "k+gEHcP3wiwPmAzuw27ZtakgOJllIkDlBAsHTu1HLkE=";
+            SR = new SpeechRecognizer("en-US", credentials);
+        }
+        
 
         
     }
