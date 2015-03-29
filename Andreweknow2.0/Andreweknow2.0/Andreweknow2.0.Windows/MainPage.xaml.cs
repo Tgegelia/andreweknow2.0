@@ -16,7 +16,7 @@ using Bing.Speech;
 using Windows.Networking.Sockets;
 using Windows.Networking;
 using Windows.Storage.Streams;
-
+using Windows.Networking.Proximity;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -63,9 +63,12 @@ namespace Andreweknow2._0
         private async void send_Data(string command)
         {
             StreamSocket socket = new StreamSocket();
+          /*  PeerFinder.AlternateIdentities["Bluetooth:Paired"] = "";
+            var pairedDevices = await PeerFinder.FindAllPeersAsync();
+            PeerInformation selectedDevice = pairedDevices[0];*/
             HostName deviceHostName= new HostName("20:14:10:14:07:50");
             DataWriter dataWriter = new DataWriter(socket.OutputStream);
-            await socket.ConnectAsync(deviceHostName,"1");
+            await socket.ConnectAsync(deviceHostName, "1");
 
             if(dataWriter != null)
             {
