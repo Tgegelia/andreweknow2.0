@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -35,6 +36,7 @@ namespace Andreweknow2._0
         public MainPage()
         {
             this.InitializeComponent();
+            connect();
             this.Loaded += MainPage_Loaded;
         }
         private void clicked(object sender, RoutedEventArgs e)
@@ -61,7 +63,7 @@ namespace Andreweknow2._0
                 await SendCommand("1");//send signal to lights
             if (daBox.Text == "Turn on the heat.")
                 await SendCommand("3");//send signal for heat
-            if (daBox.Text == "I will kill Kyle.")
+            if (daBox.Text == "Reset.")
                 await SendCommand("0");//kill Kyle
             
         }
@@ -117,6 +119,7 @@ namespace Andreweknow2._0
             if(socket!=null)
                 socket.Dispose();
         }
+       
         
     }
 

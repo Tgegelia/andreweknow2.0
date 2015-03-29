@@ -10,10 +10,11 @@
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <sp:SpeechRecognizerUx x:Name="SpeechControl" />
-    	<Button x:Name="conn" Content="Connect" HorizontalAlignment="Left" Margin="206,120,0,0" VerticalAlignment="Top" Click="conn_clicked"/>
-    	<Button x:Name="voice" Content="Disconnect" HorizontalAlignment="Left" Margin="582,120,0,0" VerticalAlignment="Top" Click="disc_clicked"/>
-    	<Button x:Name="disConn" Content="I will kill Kyle" HorizontalAlignment="Left" Margin="1075,120,0,0" VerticalAlignment="Top" Click="clicked"/>
-        <TextBox x:Name="daBox" HorizontalAlignment="Left" Margin="437,401,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Height="122" Width="523"/>
-        <AppBarButton x:Name="SpeakButton" Icon="Microphone" Click="SpeakButton_Clicked" />
+        <TextBox x:Name="daBox" HorizontalAlignment="Center" Margin="422,93,421,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Height="122" Width="523"/>
+        <AppBarButton x:Name="SpeakButton" Click="SpeakButton_Clicked" Margin="623,435,621,260" Height="73" Width="122" Icon="Microphone" RequestedTheme="Dark" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Center" VerticalAlignment="Center" >
+        	<AppBarButton.RenderTransform>
+        		<CompositeTransform ScaleX="5" ScaleY="5"/>
+        	</AppBarButton.RenderTransform>
+        </AppBarButton>
     </Grid>
 </Page>
