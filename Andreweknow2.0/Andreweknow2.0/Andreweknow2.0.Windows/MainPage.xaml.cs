@@ -67,8 +67,8 @@ namespace Andreweknow2._0
             {
                 daBox.Text = a.ToString();
             }
-            bool open,lights,garage,on,heat, off;
-            open = lights = garage = on = heat = off = false;
+            bool open,lights,garage,on,heat, off,unlock,lock1;
+            open = lights = garage = on = heat = off =unlock=lock1= false;
             char[] delimiterChars = { ' ', ',', '.', ':', '\t' };
             String[] text = daBox.Text.ToLower().Split(delimiterChars);
             foreach (string s in text)
@@ -85,6 +85,10 @@ namespace Andreweknow2._0
                     heat = true;
                 if (s == "off")
                     off = true;
+                if (s == "unlock")
+                    unlock = true;
+                if (s == "lock")
+                    lock1 = true;
             }
             if (open && garage)
             {
@@ -105,6 +109,16 @@ namespace Andreweknow2._0
             {
                 await SendCommand("0");//kill Kyle
                 stream = await speech.SynthesizeTextToStreamAsync("They're off");
+            }
+            else if(lock1)
+            {
+                await SendCommand("4");
+                stream= await speech.SynthesizeTextToStreamAsync("Locked");
+            }
+            else if(unlock)
+            {
+                await SendCommand("5");
+                stream = await speech.SynthesizeTextToStreamAsync("Unlocked");
             }
             else
                 stream = null;
