@@ -13,6 +13,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using Windows.UI.ViewManagement;
 using Bing.Speech;
 using Windows.Networking.Sockets;
 using Windows.Networking;
@@ -31,12 +32,19 @@ namespace Andreweknow2._0
         DataWriter dataWriter;
         SpeechRecognizer SR;
         StreamSocket socket;
+        public static bool TerminateAppOnFinalViewClose { get; set; }
 
         public MainPage()
         {
+            TerminateAppOnFinalViewClose = true;
             this.InitializeComponent();
             this.Loaded += MainPage_Loaded;
         }
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            disc_clicked(null, null);
+        }
+
         private void clicked(object sender, RoutedEventArgs e)
         {
             Button b = (Button)sender;
