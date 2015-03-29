@@ -13,6 +13,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Bing.Speech;
+
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace Andreweknow2._0
@@ -35,9 +36,17 @@ namespace Andreweknow2._0
             daBox.Text = b.Content.ToString();
         }
 
-        private void SpeakButton_Clicked(object sender, RoutedEventArgs e)
+        private async void SpeakButton_Clicked(object sender, RoutedEventArgs e)
         {
-
+            try
+            {
+                var result = await SR.RecognizeSpeechToTextAsync();
+                daBox.Text = result.Text;
+            }
+            catch (Exception)
+            {
+                daBox.Text = "Error Occured";
+            }
         }
 
  
@@ -47,9 +56,16 @@ namespace Andreweknow2._0
             credentials.ClientId = "Andreweknow";
             credentials.ClientSecret = "k+gEHcP3wiwPmAzuw27ZtakgOJllIkDlBAsHTu1HLkE=";
             SR = new SpeechRecognizer("en-US", credentials);
+            SpeechControl.Tips = new string[]
+            {
+                "For more accurate results, try using a headset microphone.",
+                "Speak with a consistent volume.",
+                "Speak in a natural rhythm with clear consonants.",
+                "Speak with a slow to moderate tempo.",
+                "Background noise may interfere with accurate speech recognition."
+            };
+            SpeechControl.SpeechRecognizer = SR;
         }
-        
-
         
     }
 
