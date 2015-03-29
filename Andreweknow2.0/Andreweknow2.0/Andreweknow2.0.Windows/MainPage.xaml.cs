@@ -38,6 +38,7 @@ namespace Andreweknow2._0
 
         private async void SpeakButton_Clicked(object sender, RoutedEventArgs e)
         {
+            
             try
             {
                 var result = await SR.RecognizeSpeechToTextAsync();
@@ -47,6 +48,14 @@ namespace Andreweknow2._0
             {
                 daBox.Text = "Error Occured";
             }
+            if (daBox.Text == "Open the Garage")
+                ;//send signal to garage
+            if (daBox.Text == "Turn on the lights")
+                ;//send signal to lights
+            if (daBox.Text == "Turn on the heat")
+                ;//send signal for heat
+
+            
         }
 
  
